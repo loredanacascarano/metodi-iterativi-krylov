@@ -18,23 +18,25 @@ def arnoldi_iteration(A, b, n):
 
     return Q, H
 
+
 def solve_reduced_system(H, b, m):
     """
     Risolve il sistema ridotto H * y = beta * e1.
     """
     beta = np.linalg.norm(b)
-    e1 = np.zeros(m+1)
+    e1 = np.zeros(m + 1)
     e1[0] = beta
 
-    y = np.linalg.lstsq(H[:m+1, :m], e1, rcond=None)[0]
-    return y
+    return np.linalg.lstsq(H[:m + 1, :m], e1, rcond=None)[0]
+
 
 def construct_solution(V, y, m):
     """
     Costruisce la soluzione approssimata del sistema originale.
     """
-    x_approx = np.dot(V[:, :m], y)
-    return x_approx
+    return np.dot(V[:, :m], y)
+
+
 
 # Example usage
 A = np.array([[10, 2, 3, 0, 1],
@@ -43,14 +45,14 @@ A = np.array([[10, 2, 3, 0, 1],
               [0, 1, 2, 7, 2],
               [1, 0, 1, 2, 6]])
 b = np.array([1, 0, 0, 0, 0])
-m=4
-Q, H = arnoldi_iteration(A, b, m)
+iterazioni = 4
+Q, H = arnoldi_iteration(A, b, iterazioni)
 
 # Risoluzione del sistema ridotto
-y = solve_reduced_system(H, b, m)
+y = solve_reduced_system(H, b, iterazioni)
 
 # Costruzione della soluzione approssimata
-x_approx = construct_solution(Q, y, m)
+x_approx = construct_solution(Q, y, iterazioni)
 
 # Stampa le matrici in modo leggibile
 print("Q:")
@@ -62,5 +64,5 @@ for row in H:
     print(" ", ' '.join(f'{num:.1f}' for num in row))
 
 # Visualizzazione della soluzione
-print('Soluzione approssimata:')
+print('\n\nSoluzione approssimata:')
 print(x_approx)
